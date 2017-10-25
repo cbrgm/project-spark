@@ -8,6 +8,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.spark.game.entity.components.InputComponent;
 import de.spark.game.entity.components.PositionComponent;
@@ -26,6 +27,15 @@ public class InputSystem extends EntitySystem {
 	private ComponentMapper<PositionComponent> pm = ComponentMapper.getFor(PositionComponent.class);
 	private ComponentMapper<VelocityComponent> vm = ComponentMapper.getFor(VelocityComponent.class);
 	private ComponentMapper<InputComponent> im = ComponentMapper.getFor(InputComponent.class);
+
+	private OrthographicCamera camera;
+
+	/**
+	 * Constructor for new InputSystem.
+	 */
+	public InputSystem(OrthographicCamera camera) {
+		this.camera = camera;
+	}
 
 	public void addedToEngine(Engine engine) {
 		entities = engine.getEntitiesFor(
@@ -70,6 +80,9 @@ public class InputSystem extends EntitySystem {
 
 			position.setX(position.getCoordinates().x + velocity.getDirectionX() * velocity.getVerticalSpeed());
 			position.setY(position.getCoordinates().y + velocity.getDirectionY() * velocity.getHorizontalSpeed());
+
+			camera.position.lerp(position.getCoordinates(), .2f);
+			camera.update();
 
 		}
 	}

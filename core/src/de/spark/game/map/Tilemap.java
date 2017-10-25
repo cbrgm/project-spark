@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Tilemap {
 
-	public final int CHUNK_DIMENSION = 33;
+	public final int CHUNK_DIMENSION = 50;
 	public final int TILE_SIZE = 8;
 
 	private Chunk chunkData;

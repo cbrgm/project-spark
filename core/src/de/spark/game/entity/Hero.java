@@ -21,8 +21,8 @@ public class Hero extends Entity {
 	public Hero() {
 		PositionComponent position = new PositionComponent();
 		VelocityComponent velocity = new VelocityComponent();
-		velocity.setHorizontalSpeed(3);
-		velocity.setVerticalSpeed(3);
+		velocity.setHorizontalSpeed(.3f);
+		velocity.setVerticalSpeed(.3f);
 
 		TextureComponent texture = new TextureComponent();
 		texture.setHeight(8);

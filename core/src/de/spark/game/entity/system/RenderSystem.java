@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -23,6 +24,7 @@ public class RenderSystem extends EntitySystem {
 
 	private SpriteBatch batch;
 	private CleverAssetManager assetManager;
+	private OrthographicCamera camera;
 
 	private ImmutableArray<Entity> entities;
 
@@ -32,7 +34,8 @@ public class RenderSystem extends EntitySystem {
 	/**
 	 * Constructor for new RenderSystem.
 	 */
-	public RenderSystem(SpriteBatch batch, CleverAssetManager assetmanager) {
+	public RenderSystem(SpriteBatch batch, OrthographicCamera camera, CleverAssetManager assetmanager) {
+		this.camera = camera;
 		this.batch = batch;
 		this.assetManager = assetmanager;
 	}
@@ -49,6 +52,8 @@ public class RenderSystem extends EntitySystem {
 			batch.draw(texture, entity.getComponent(PositionComponent.class).getCoordinates().x,
 					entity.getComponent(PositionComponent.class).getCoordinates().y);
 		}
+
+		batch.setProjectionMatrix(camera.combined);
 	}
 
 }

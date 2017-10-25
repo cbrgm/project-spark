@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import de.spark.game.assets.CleverAssetManager;
@@ -22,6 +23,7 @@ import de.spark.game.map.Tilemap;
  */
 public class GameStartup extends Game {
 
+	OrthographicCamera camera;
 	CleverAssetManager assetManager;
 	Engine engine;
 	SpriteBatch batch;
@@ -43,6 +45,7 @@ public class GameStartup extends Game {
 		mapRenderer = new MapRenderer(assetManager, batch);
 		map = new Tilemap();
 
+		setupCamera();
 		setupEngine();
 	}
 
@@ -60,11 +63,24 @@ public class GameStartup extends Game {
 
 	}
 
+	private void setupCamera() {
+		// CAMERA
+		int displayW = Gdx.graphics.getWidth();
+		int displayH = Gdx.graphics.getHeight();
+
+		// For 800x600 = 266*200
+		int h = (int) (displayH / Math.floor(displayH / 160));
+		int w = (int) (displayW / (displayH / (displayH / Math.floor(displayH / 160))));
+
+		camera = new OrthographicCamera(w, h);
+		camera.zoom = .6f;
+	}
+
 	private void setupEngine() {
 		engine = new Engine();
-		RenderSystem renderSystem = new RenderSystem(batch, assetManager);
+		RenderSystem renderSystem = new RenderSystem(batch, camera, assetManager);
 		MovementSystem movementSystem = new MovementSystem();
-		InputSystem inputSystem = new InputSystem();
+		InputSystem inputSystem = new InputSystem(camera);
 
 		engine.addSystem(renderSystem);
 		engine.addSystem(movementSystem);
